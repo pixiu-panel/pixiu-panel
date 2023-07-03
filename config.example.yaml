@@ -1,0 +1,31 @@
+# 系统配置
+system:
+  jwt:
+    # JWT加密密钥
+    secret: pixiu
+
+# 青龙配置
+ql:
+  host: http://10.0.0.52:5700
+  clientId: xxx
+  clientSecret: xxx
+
+# BBK配置
+bbk:
+  jdQr:
+    enable: true
+    host: http://10.0.0.52:5701
+  wechatQr:
+    enable: true
+    host: http://10.0.0.52:5702
+  sms:
+    enable: true
+    host: http://10.0.0.52:5703
+
+# 通知配置
+notify:
+  wechat:
+    host: http://10.0.0.71:19088
+  qq:
+    host: http://10.0.0.52:2333
+    accessToken: xxx
