@@ -4,6 +4,15 @@ system:
     # JWT加密密钥
     secret: pixiu
 
+# 数据库配置
+db:
+  type: mysql # 使用的数据库类型，可选 mysql | postgresql
+  host: 10.0.0.31 # 数据库地址
+  port: 3306 # 数据库端口
+  username: pixiu # 数据库用户名
+  password: pixiu123 # 数据库密码
+  database: pixiu # 数据库名
+
 # 青龙配置
 ql:
   host: http://10.0.0.52:5700

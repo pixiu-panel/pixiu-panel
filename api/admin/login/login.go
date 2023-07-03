@@ -5,7 +5,10 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/labstack/echo/v4"
 	"pixiu-panel/config"
+	"pixiu-panel/model/cache"
 	"pixiu-panel/pkg/response"
+	userService "pixiu-panel/service/user"
+	"pixiu-panel/utils"
 	"time"
 )
 
@@ -22,20 +25,32 @@ func Login(ctx echo.Context) (err error) {
 	}
 
 	// 校验密码
-	if p.Username != "lxh" || p.Password != "admin123" {
-		return response.New(ctx).SetMsg("用户名或密码错误").Fail()
+	userInfo, err := userService.GetUserWithLogin(p.Username)
+	if err != nil {
+		return response.New(ctx).SetMsg("账号不存在").Fail()
 	}
+	// 校验密码
+	if !utils.PasswordUtils().ComparePassword(userInfo.Password, p.Password) {
+		return response.New(ctx).SetMsg("密码错误").Fail()
+	}
+	defer func() {
+		// 如果登录成功，更新登录时间
+		if err == nil {
+			userService.UpdateLastLoginInfo(userInfo.Id, ctx.RealIP())
+		}
+	}()
 
-	// Set custom claims
-	claims := &jwtCustomClaims{
-		"张三丰",
-		jwt.RegisteredClaims{
+	// 设置JWT携带的信息
+	claims := &cache.JwtCustomClaims{
+		Username:   userInfo.Username,
+		IsVerified: userInfo.IsVerified,
+		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 72)),
 		},
 	}
-	// 生成Token
+	// 生成Token对象
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	// 生成token
+	// 生成token字符串
 	var tokenStr string
 	tokenStr, err = token.SignedString([]byte(config.Conf.System.Jwt.Secret))
 	if err != nil {
