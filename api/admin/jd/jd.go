@@ -2,8 +2,8 @@ package jd
 
 import (
 	"encoding/json"
-	"github.com/golang-jwt/jwt/v5"
-	"github.com/labstack/echo/v4"
+	"github.com/kataras/iris/v12"
+	"github.com/kataras/iris/v12/middleware/jwt"
 	cacheCli "pixiu-panel/internal/cache"
 	"pixiu-panel/model/cache"
 	"pixiu-panel/pkg/response"
@@ -14,10 +14,9 @@ import (
 // @description: 绑定京东账号
 // @param ctx
 // @return err
-func Binding(ctx echo.Context) (err error) {
+func Binding(ctx iris.Context) {
 	// 取出登录用户Id
-	user := ctx.Get("user").(*jwt.Token)
-	claims := user.Claims.(*cache.JwtCustomClaims)
+	claims := jwt.Get(ctx).(*cache.JwtCustomClaims)
 	userId := claims.Id
 
 	// 生成二维码
@@ -30,9 +29,10 @@ func Binding(ctx echo.Context) (err error) {
 	}
 	cacheDataBytes, _ := json.Marshal(data)
 	// 10分钟过期
-	err = cacheCli.Cache.Set([]byte(key), cacheDataBytes, 60*10)
+	err := cacheCli.Cache.Set([]byte(key), cacheDataBytes, 60*10)
 	if err != nil {
-		return response.New(ctx).SetMsg("获取二维码失败").Fail()
+		response.New(ctx).SetMsg("获取二维码失败").Fail()
+		return
 	}
 
 	// 返回二维码到前端

@@ -5,12 +5,12 @@ package response
 // @receiver r
 // @param data
 // @return err
-func (r *Response) Fail() error {
+func (r *Response) Fail() {
 	if r.msg == "" {
 		r.msg = "系统错误"
 	}
 	if r.code == 0 {
 		r.code = fail
 	}
-	return r.Result()
+	r.Result()
 }

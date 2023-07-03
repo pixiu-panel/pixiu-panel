@@ -1,6 +1,7 @@
 package db
 
 import (
+	"gitee.ltd/lxh/logger"
 	"gitee.ltd/lxh/logger/log"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
@@ -27,7 +28,11 @@ func Init() {
 	}
 
 	// 初始化连接
-	conn, err := gorm.Open(dialector, &gorm.Config{})
+	conf := gorm.Config{
+		Logger:                                   logger.DefaultGormLogger(),
+		DisableForeignKeyConstraintWhenMigrating: true,
+	}
+	conn, err := gorm.Open(dialector, &conf)
 	if err != nil {
 		log.Panicf("数据库连接初始化失败: %v", err)
 	} else {

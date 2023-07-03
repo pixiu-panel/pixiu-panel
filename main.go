@@ -2,8 +2,8 @@ package main
 
 import (
 	"gitee.ltd/lxh/logger"
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
+	"gitee.ltd/lxh/logger/log"
+	"github.com/kataras/iris/v12"
 	"pixiu-panel/internal/initialize"
 	"pixiu-panel/router/admin"
 	"pixiu-panel/router/api"
@@ -21,14 +21,16 @@ func init() {
 // main
 // @description: 启动入口
 func main() {
-	e := echo.New()
-	e.Use(middleware.Logger())
-	e.Use(middleware.Recover())
+	e := iris.Default()
 
 	// 初始化后台路由
-	admin.InitRouter(e.Group("/admin/v1"))
+	admin.InitRouter(e.Party("/admin/v1"))
 	// 初始化开放接口路由
-	api.InitRouter(e.Group("/api/v1"))
+	api.InitRouter(e.Party("/api/v1"))
 
-	e.Logger.Fatal(e.Start(":1323"))
+	// 启动服务
+	if err := e.Listen(":1323"); err != nil {
+		log.Errorf("服务启动失败：%v", err)
+		return
+	}
 }

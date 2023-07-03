@@ -8,7 +8,7 @@ package response
 // @param msg string 消息
 // @param err string 错误信息
 // @return err error 返回数据错误
-func (r *Response) Result() (err error) {
+func (r *Response) Result() {
 	type resp struct {
 		Code   int    `json:"code"`
 		Data   any    `json:"data"`
@@ -23,5 +23,9 @@ func (r *Response) Result() (err error) {
 		r.errMsg,
 	}
 	// 返回数据
-	return r.ctx.JSON(rd.Code, rd)
+	if r.code == success {
+		_ = r.ctx.JSON(rd)
+	} else {
+		_ = r.ctx.StopWithJSON(r.code, rd)
+	}
 }

@@ -2,8 +2,8 @@ package login
 
 import (
 	"gitee.ltd/lxh/logger/log"
-	"github.com/golang-jwt/jwt/v5"
-	"github.com/labstack/echo/v4"
+	"github.com/kataras/iris/v12"
+	"github.com/kataras/iris/v12/middleware/jwt"
 	"pixiu-panel/config"
 	"pixiu-panel/model/cache"
 	"pixiu-panel/pkg/response"
@@ -16,27 +16,30 @@ import (
 // @description: 登录
 // @param ctx
 // @return err
-func Login(ctx echo.Context) (err error) {
+func Login(ctx iris.Context) {
 	log.Debugf("收到登录请求")
 	var p LoginWithPassword
-	if err = ctx.Bind(&p); err != nil {
+	if err := ctx.ReadJSON(&p); err != nil {
 		log.Errorf("参数解析失败：%v", err)
-		return response.New(ctx).SetMsg("参数错误").SetError(err).Fail()
+		response.New(ctx).SetMsg("参数错误").SetError(err).Fail()
+		return
 	}
 
 	// 校验密码
 	userInfo, err := userService.GetUserWithLogin(p.Username)
 	if err != nil {
-		return response.New(ctx).SetMsg("账号不存在").Fail()
+		response.New(ctx).SetMsg("账号不存在").Fail()
+		return
 	}
 	// 校验密码
 	if !utils.PasswordUtils().ComparePassword(userInfo.Password, p.Password) {
-		return response.New(ctx).SetMsg("密码错误").Fail()
+		response.New(ctx).SetMsg("密码错误").Fail()
+		return
 	}
 	defer func() {
 		// 如果登录成功，更新登录时间
 		if err == nil {
-			userService.UpdateLastLoginInfo(userInfo.Id, ctx.RealIP())
+			userService.UpdateLastLoginInfo(userInfo.Id, ctx.RemoteAddr())
 		}
 	}()
 
@@ -45,17 +48,16 @@ func Login(ctx echo.Context) (err error) {
 		Id:         userInfo.Id,
 		Username:   userInfo.Username,
 		IsVerified: userInfo.IsVerified,
-		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 72)),
-		},
 	}
+
+	signer := jwt.NewSigner(jwt.HS256, config.Conf.System.Jwt.Secret, 10*time.Minute)
+
 	// 生成Token对象
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	// 生成token字符串
-	var tokenStr string
-	tokenStr, err = token.SignedString([]byte(config.Conf.System.Jwt.Secret))
+	var token []byte
+	token, err = signer.Sign(claims)
 	if err != nil {
-		return err
+		response.New(ctx).SetMsg("系统错误").Fail()
+		return
 	}
-	return response.New(ctx).SetData(tokenStr).Success()
+	response.New(ctx).SetData(string(token)).Success()
 }

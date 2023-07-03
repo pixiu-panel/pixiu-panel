@@ -1,7 +1,7 @@
 package response
 
 import (
-	"github.com/labstack/echo/v4"
+	"github.com/kataras/iris/v12"
 	"net/http"
 )
 
@@ -14,7 +14,7 @@ const (
 // Response
 // @description: 返回结果
 type Response struct {
-	ctx    echo.Context
+	ctx    iris.Context
 	code   int
 	data   any
 	msg    string
@@ -25,7 +25,7 @@ type Response struct {
 // @description: 返回结果实现
 // @param ctx
 // @return Response
-func New(ctx echo.Context) *Response {
+func New(ctx iris.Context) *Response {
 	var r Response
 	r.ctx = ctx
 

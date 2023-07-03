@@ -2,9 +2,9 @@ package middleware
 
 import (
 	"gitee.ltd/lxh/logger/log"
-	"github.com/golang-jwt/jwt/v5"
-	echojwt "github.com/labstack/echo-jwt/v4"
-	"github.com/labstack/echo/v4"
+	"github.com/kataras/iris/v12"
+	"github.com/kataras/iris/v12/context"
+	"github.com/kataras/iris/v12/middleware/jwt"
 	"net/http"
 	"pixiu-panel/config"
 	"pixiu-panel/model/cache"
@@ -13,13 +13,16 @@ import (
 
 // Jwt
 // @description: Jwt中间件
-func Jwt() echo.MiddlewareFunc {
-	return echojwt.WithConfig(echojwt.Config{
-		SigningKey: []byte(config.Conf.System.Jwt.Secret),
-		NewClaimsFunc: func(ctx echo.Context) jwt.Claims {
-			return new(cache.JwtCustomClaims)
-		},
-		ErrorHandler: errorHandler,
+func Jwt() context.Handler {
+	verifier := jwt.NewVerifier(jwt.HS256, config.Conf.System.Jwt.Secret)
+	verifier.WithDefaultBlocklist()
+
+	// 自定义错误处理
+	verifier.ErrorHandler = errorHandler
+
+	// 返回验证器
+	return verifier.Verify(func() interface{} {
+		return new(cache.JwtCustomClaims)
 	})
 }
 
@@ -28,7 +31,7 @@ func Jwt() echo.MiddlewareFunc {
 // @param ctx
 // @param err
 // @return error
-func errorHandler(ctx echo.Context, err error) error {
+func errorHandler(ctx iris.Context, err error) {
 	log.Debugf("未授权访问: %v", err)
-	return response.New(ctx).SetCode(http.StatusUnauthorized).SetMsg("未登录或登录已过期").Fail()
+	response.New(ctx).SetCode(http.StatusUnauthorized).SetMsg("未登录或登录已过期").Fail()
 }
