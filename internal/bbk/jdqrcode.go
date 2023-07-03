@@ -37,3 +37,22 @@ func GetJdQrcode() (data cache.BBKJdQrcode, err error) {
 	data.Cookie = strings.TrimSpace(strings.Split(resp.Header().Get("Set-Cookie"), ";")[0])
 	return
 }
+
+// CheckJdQrcode
+// @description: 检查京东二维码是否扫描
+// @param cookie string 从BBK获取二维码时的cookie
+func CheckJdQrcode(cookie string) (data cache.BBKBaseResponse[string], err error) {
+	// 组装请求地址
+	api := fmt.Sprintf("%s/d/status?t=%d", config.Conf.BBK.JdQr.Host, time.Now().Local().UnixMilli())
+
+	cli := resty.New()
+	_, err = cli.R().
+		SetHeader("Cookie", cookie).
+		SetResult(&data).
+		Get(api)
+	if err != nil {
+		return
+	}
+
+	return
+}
