@@ -42,6 +42,7 @@ func Login(ctx echo.Context) (err error) {
 
 	// 设置JWT携带的信息
 	claims := &cache.JwtCustomClaims{
+		Id:         userInfo.Id,
 		Username:   userInfo.Username,
 		IsVerified: userInfo.IsVerified,
 		RegisteredClaims: jwt.RegisteredClaims{

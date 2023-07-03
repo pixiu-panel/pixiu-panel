@@ -12,6 +12,7 @@ func databaseTable() {
 	tables := []any{
 		new(entity.User),       // 用户表
 		new(entity.UserNotify), // 用户推送配置表
+		new(entity.UserJd),     // 用户京东账号绑定表
 	}
 
 	// 同步表结构
