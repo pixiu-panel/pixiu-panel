@@ -7,7 +7,7 @@ require (
 	github.com/coocood/freecache v1.2.3
 	github.com/duke-git/lancet/v2 v2.2.3
 	github.com/fsnotify/fsnotify v1.6.0
-	github.com/golang-jwt/jwt/v5 v5.0.0
+	github.com/go-resty/resty/v2 v2.7.0
 	github.com/google/uuid v1.3.0
 	github.com/kataras/iris/v12 v12.2.0
 	github.com/spf13/viper v1.16.0

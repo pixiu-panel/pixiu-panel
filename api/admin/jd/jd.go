@@ -4,38 +4,43 @@ import (
 	"encoding/json"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/middleware/jwt"
+	"pixiu-panel/internal/bbk"
 	cacheCli "pixiu-panel/internal/cache"
 	"pixiu-panel/model/cache"
 	"pixiu-panel/pkg/response"
 	"pixiu-panel/utils"
 )
 
-// Binding
-// @description: 绑定京东账号
+// GetJdQrcode
+// @description: 获取京东二维码
 // @param ctx
 // @return err
-func Binding(ctx iris.Context) {
+func GetJdQrcode(ctx iris.Context) {
 	// 取出登录用户Id
 	claims := jwt.Get(ctx).(*cache.JwtCustomClaims)
 	userId := claims.Id
 
 	// 生成二维码
+	qrcode, err := bbk.GetJdQrcode()
+	if err != nil {
+		response.New(ctx).SetMsg("获取二维码失败").SetError(err).Fail()
+		return
+	}
 
 	// 缓存二维码和用户Id关系
 	key := utils.RandomUtils().GetRandomStringMini(5)
 	data := map[string]any{
-		"userId": userId, // 用户Id
-		"cookie": "",     // 从BBK获取二维码时的cookie
+		"userId": userId,        // 用户Id
+		"cookie": qrcode.Cookie, // 从BBK获取二维码时的cookie
 	}
 	cacheDataBytes, _ := json.Marshal(data)
-	// 10分钟过期
-	err := cacheCli.Cache.Set([]byte(key), cacheDataBytes, 60*10)
+	// 设置缓存
+	err = cacheCli.Cache.Set([]byte(key), cacheDataBytes, qrcode.Timeout)
 	if err != nil {
 		response.New(ctx).SetMsg("获取二维码失败").Fail()
 		return
 	}
 
 	// 返回二维码到前端
-
-	return
+	response.New(ctx).SetData(qrcode).Success()
 }
