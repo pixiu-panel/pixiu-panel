@@ -8,6 +8,7 @@ import (
 	"github.com/go-oauth2/oauth2/v4"
 	"github.com/go-oauth2/oauth2/v4/errors"
 	"net/http"
+	"pixiu-panel/internal/db"
 	"pixiu-panel/internal/redis"
 	"pixiu-panel/model/entity"
 	userService "pixiu-panel/service/user"
@@ -62,8 +63,12 @@ func ExtensionFields(ti oauth2.TokenInfo) (fieldsValue map[string]any) {
 		log.Errorf("缓存用户的accessToken失败: %v", err.Error())
 	}
 
-	// 还可以填充用户登录后需要的信息进去
-	fieldsValue["username"] = ti.GetUserID()
+	// 填充用户信息
+	var ui entity.User
+	_ = db.Client.Take(&ui, "id = ?", ti.GetUserID()).Error
+	fieldsValue["username"] = ui.Username
+	fieldsValue["id"] = ui.Id
+	fieldsValue["roles"] = []string{"admin"} // 先手写一个权限，后续再完善
 	return
 }
 
