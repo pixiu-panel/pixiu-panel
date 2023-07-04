@@ -7,7 +7,10 @@ import (
 	"pixiu-panel/internal/bbk"
 	cacheCli "pixiu-panel/internal/cache"
 	"pixiu-panel/model/cache"
+	"pixiu-panel/model/param"
 	"pixiu-panel/pkg/response"
+	"pixiu-panel/pkg/validator"
+	"pixiu-panel/service/jd"
 	"pixiu-panel/utils"
 )
 
@@ -43,4 +46,27 @@ func GetJdQrcode(ctx iris.Context) {
 
 	// 返回二维码到前端
 	response.New(ctx).SetData(qrcode).Success()
+}
+
+// GetBind
+// @description: 获取用户绑定的京东账号
+// @param ctx
+func GetBind(ctx iris.Context) {
+	var p param.PageUserJdAccount
+	if err := ctx.ReadQuery(&p); err != nil {
+		response.New(ctx).SetMsg("参数错误").SetError(validator.Translate(err)).Fail()
+		return
+	}
+
+	// 手动填充用户Id
+	p.UserId = ctx.Value("userId").(string)
+
+	// 查询数据
+	records, total, err := jd.GetBindByUser(p)
+	if err != nil {
+		response.New(ctx).SetMsg("获取失败").SetError(err).Fail()
+		return
+	}
+	// 返回数据
+	response.New(ctx).SetData(response.NewPageData(records, total, p.Current, p.Size)).Success()
 }
