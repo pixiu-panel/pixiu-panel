@@ -5,6 +5,7 @@ import (
 	"gitee.ltd/lxh/logger/log"
 	"github.com/kataras/iris/v12"
 	"pixiu-panel/internal/initialize"
+	"pixiu-panel/pkg/validator"
 	"pixiu-panel/router/admin"
 	"pixiu-panel/router/api"
 )
@@ -22,6 +23,7 @@ func init() {
 // @description: 启动入口
 func main() {
 	e := iris.Default()
+	validator.Init(e)
 
 	// 初始化后台路由
 	admin.InitRouter(e.Party("/admin/v1"))

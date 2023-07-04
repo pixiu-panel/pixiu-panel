@@ -13,6 +13,13 @@ db:
   password: pixiu123 # 数据库密码
   database: pixiu # 数据库名
 
+# Redis配置
+redis:
+  host: 10.0.0.31
+  port: 6379
+  password: xxx
+  db: 0
+
 # 青龙配置
 ql:
   host: http://10.0.0.52:5700

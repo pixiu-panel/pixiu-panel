@@ -6,3 +6,10 @@ type LoginWithPassword struct {
 	Username string `json:"username" form:"username" validate:"required"` // 用户名
 	Password string `json:"password" form:"password" validate:"required"` // 密码
 }
+
+// RefreshToken
+// @description: 刷新Token入参
+type RefreshToken struct {
+	RefreshToken string `json:"refresh_token" form:"refresh_token" binding:"required"` // 刷新Token
+	GrantType    string `json:"grant_type" form:"grant_type" binding:"required"`       // 授权类型,写refresh_token
+}

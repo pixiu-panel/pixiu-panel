@@ -15,7 +15,7 @@ import (
 func Binding(ctx iris.Context) {
 	var p BindingNotify
 	if err := ctx.ReadBody(&p); err != nil {
-		response.New(ctx).SetMsg("参数错误").SetError(err).Fail()
+		response.New(ctx).SetMsg("参数错误").SetError(validator.Translate(err)).Fail()
 		return
 	}
 

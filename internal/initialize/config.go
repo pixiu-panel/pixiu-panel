@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/viper"
 	"pixiu-panel/config"
 	"pixiu-panel/internal/db"
+	"pixiu-panel/internal/redis"
 )
 
 // 配置管理工具
@@ -29,6 +30,7 @@ func initConfig() {
 	log.Debugf("配置文件解析完成: %+v", config.Conf)
 	// 初始化数据库连接
 	db.Init()
+	redis.Init()
 
 	// 下面的代码是配置变动之后自动刷新的
 	vp.WatchConfig()
@@ -39,6 +41,7 @@ func initConfig() {
 		} else {
 			// 初始化数据库连接
 			db.Init()
+			redis.Init()
 		}
 	})
 }

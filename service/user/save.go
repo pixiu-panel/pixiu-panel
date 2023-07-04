@@ -9,10 +9,10 @@ import (
 
 // UpdateLastLoginInfo
 // @description: 更新最后登录时间和IP
-// @param id
-// @param ip
-func UpdateLastLoginInfo(id, ip string) {
-	err := db.Client.Model(&entity.User{}).Where("id = ?", id).
+// @param username string 账号
+// @param ip string IP地址
+func UpdateLastLoginInfo(username, ip string) {
+	err := db.Client.Model(&entity.User{}).Where("username = ? OR id = ?", username, username).
 		Updates(map[string]any{
 			"last_login_at": time.Now(),
 			"last_login_ip": ip,
