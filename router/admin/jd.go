@@ -10,6 +10,7 @@ import (
 // @param g
 func jd(g iris.Party) {
 	bind := g.Party("/binding")
-	bind.Get("", jdApi.GetBind)            // 获取用户绑定的京东账号
-	bind.Get("/qrcode", jdApi.GetJdQrcode) // 获取京东二维码
+	bind.Get("", jdApi.GetBind)                   // 获取用户绑定的京东账号
+	bind.Get("/qrcode", jdApi.GetJdQrcode)        // 获取京东二维码
+	bind.Get("/qrcode/check", jdApi.CheckBinding) // 获取京东二维码扫描状态
 }

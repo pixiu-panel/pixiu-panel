@@ -11,6 +11,15 @@ import (
 // @param p
 // @return err
 func SaveJdInfo(p param.SaveJdAccount) (err error) {
+	if p.Id == "" {
+		// 新增
+		jd := entity.UserJd{
+			Pin:    p.Pin,
+			UserId: p.UserId,
+		}
+		err = db.Client.Create(&jd).Error
+		return
+	}
 	// 更新
 	up := make(map[string]any)
 	up["remark"] = p.Remark
