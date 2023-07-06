@@ -13,6 +13,7 @@ import (
 	"pixiu-panel/model/entity"
 	userService "pixiu-panel/service/user"
 	"pixiu-panel/utils"
+	"strings"
 	"time"
 )
 
@@ -68,7 +69,7 @@ func ExtensionFields(ti oauth2.TokenInfo) (fieldsValue map[string]any) {
 	_ = db.Client.Take(&ui, "id = ?", ti.GetUserID()).Error
 	fieldsValue["username"] = ui.Username
 	fieldsValue["id"] = ui.Id
-	fieldsValue["roles"] = []string{"admin"} // 先手写一个权限，后续再完善
+	fieldsValue["roles"] = strings.Split(ui.Role, ",")
 	return
 }
 
