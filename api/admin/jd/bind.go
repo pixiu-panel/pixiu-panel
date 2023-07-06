@@ -12,6 +12,7 @@ import (
 	"pixiu-panel/service/jd"
 	"pixiu-panel/utils"
 	"regexp"
+	"strings"
 )
 
 // GetJdQrcode
@@ -30,7 +31,8 @@ func GetJdQrcode(ctx iris.Context) {
 	}
 
 	// 缓存二维码和用户Id关系
-	key := "jd:bind:wait:" + utils.RandomUtils().GetRandomStringMini(5)
+	code := strings.ToLower(utils.RandomUtils().GetRandomStringMini(5))
+	key := "jd:bind:wait:" + code
 	data := map[string]any{
 		"userId": userId,        // 用户Id
 		"cookie": qrcode.Cookie, // 从BBK获取二维码时的cookie
@@ -44,7 +46,7 @@ func GetJdQrcode(ctx iris.Context) {
 	}
 
 	// 替换Cookie为缓存Key
-	qrcode.Cookie = key
+	qrcode.Cookie = code
 	// 返回二维码到前端
 	response.New(ctx).SetData(qrcode).Success()
 }
@@ -90,11 +92,11 @@ func CheckBinding(ctx iris.Context) {
 		return
 	case 500, 202, 408:
 		// 二维码失效
-		response.New(ctx).SetMsg("二维码已失效").Success()
+		response.New(ctx).SetData("二维码已失效").Success()
 		return
 	case 201:
 		// 请在手机上确认登录
-		response.New(ctx).SetMsg("请在手机上确认登录").Success()
+		response.New(ctx).SetData("请在手机上确认登录").Success()
 		return
 	case 410:
 		// 登录成功
@@ -116,6 +118,6 @@ func CheckBinding(ctx iris.Context) {
 		}
 		return
 	}
-	response.New(ctx).Success()
+	response.New(ctx).SetData("绑定成功").Success()
 
 }

@@ -58,6 +58,9 @@ func updateJdAccount() {
 		pm["expired"] = data["cookie"].Status == 1
 		pm["last_update"] = data["wsck"].UpdatedAt
 		pm["cookie"] = data["cookie"].Value
+		pm["ql_cookie_id"] = data["cookie"].Id
+		pm["ql_wsck_id"] = data["wsck"].Id
+
 		// 保存京东账户信息
 		if err := db.Client.Model(&entity.UserJd{}).Where("pin = ?", pin).Updates(pm).Error; err != nil {
 			log.Errorf("更新京东账户信息失败: %v", err)

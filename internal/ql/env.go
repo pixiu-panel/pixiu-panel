@@ -31,3 +31,25 @@ func GetEnvs(key string) (envs []model.Env) {
 	envs = resp.Data
 	return
 }
+
+// DisableEnv
+// @description: 禁用环境变量
+// @param ids
+// @return err
+func DisableEnv(ids []int) (err error) {
+	token, err := GetToken()
+	if err != nil {
+		log.Errorf("获取青龙Token失败: %v", err)
+		return
+	}
+
+	cli := resty.New()
+	_, err = cli.R().
+		SetBody(ids).
+		SetAuthToken(token.Token).
+		Put(config.Conf.Ql.Host + "/open/envs/disable")
+	if err != nil {
+		log.Errorf("禁用青龙环境变量失败: %v", err)
+	}
+	return
+}
