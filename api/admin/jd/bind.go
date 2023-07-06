@@ -4,11 +4,9 @@ import (
 	"encoding/json"
 	"gitee.ltd/lxh/logger/log"
 	"github.com/kataras/iris/v12"
-	"github.com/kataras/iris/v12/middleware/jwt"
 	"net/http"
 	"pixiu-panel/internal/bbk"
 	cacheCli "pixiu-panel/internal/cache"
-	"pixiu-panel/model/cache"
 	"pixiu-panel/model/param"
 	"pixiu-panel/pkg/response"
 	"pixiu-panel/service/jd"
@@ -22,8 +20,7 @@ import (
 // @return err
 func GetJdQrcode(ctx iris.Context) {
 	// 取出登录用户Id
-	claims := jwt.Get(ctx).(*cache.JwtCustomClaims)
-	userId := claims.Id
+	userId := ctx.Value("userId").(string)
 
 	// 生成二维码
 	qrcode, err := bbk.GetJdQrcode()
