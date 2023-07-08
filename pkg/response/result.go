@@ -23,9 +23,5 @@ func (r *Response) Result() {
 		r.errMsg,
 	}
 	// 返回数据
-	if r.code == success {
-		_ = r.ctx.JSON(rd)
-	} else {
-		_ = r.ctx.StopWithJSON(r.code, rd)
-	}
+	r.ctx.JSON(r.code, rd)
 }

@@ -1,7 +1,7 @@
 package menu
 
 import (
-	"github.com/kataras/iris/v12"
+	"github.com/gin-gonic/gin"
 	"pixiu-panel/model/vo"
 	"pixiu-panel/pkg/response"
 )
@@ -9,7 +9,7 @@ import (
 // GetMenuTree
 // @description: 获取菜单树
 // @param ctx
-func GetMenuTree(ctx iris.Context) {
+func GetMenuTree(ctx *gin.Context) {
 	menus := make([]vo.MenuNode, 0)
 	response.New(ctx).SetData(menus).Success()
 }

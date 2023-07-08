@@ -1,7 +1,7 @@
 package jd
 
 import (
-	"github.com/kataras/iris/v12"
+	"github.com/gin-gonic/gin"
 	"pixiu-panel/pkg/response"
 	"pixiu-panel/service/jd"
 )
@@ -9,10 +9,10 @@ import (
 // Delete
 // @description: 删除京东账号
 // @param ctx
-func Delete(ctx iris.Context) {
+func Delete(ctx *gin.Context) {
 	// 获取参数
 	userId := ctx.Value("userId").(string)
-	id := ctx.URLParam("id")
+	id := ctx.Param("id")
 
 	// 删除数据
 	if err := jd.Delete(userId, id); err != nil {

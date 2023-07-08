@@ -1,13 +1,13 @@
 package admin
 
 import (
-	"github.com/kataras/iris/v12"
+	"github.com/gin-gonic/gin"
 	menuApi "pixiu-panel/api/admin/menu"
 )
 
 // menu
 // @description: 菜单相关接口
 // @param g
-func menu(g iris.Party) {
-	g.Get("", menuApi.GetMenuTree)
+func menu(g *gin.RouterGroup) {
+	g.GET("", menuApi.GetMenuTree)
 }

@@ -1,4 +1,4 @@
-package notify
+package param
 
 // BindingNotify
 // @description: 绑定推送渠道参数

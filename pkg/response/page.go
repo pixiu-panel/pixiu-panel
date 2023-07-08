@@ -1,6 +1,6 @@
 package response
 
-// PageData[T any]
+// PageData
 // @description: 分页数据通用结构体
 type PageData[T any] struct {
 	Current   int   `json:"current"`   // 当前页码

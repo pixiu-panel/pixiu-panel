@@ -3,7 +3,7 @@ package main
 import (
 	"gitee.ltd/lxh/logger"
 	"gitee.ltd/lxh/logger/log"
-	"github.com/kataras/iris/v12"
+	"github.com/gin-gonic/gin"
 	"pixiu-panel/internal/initialize"
 	"pixiu-panel/pkg/validator"
 	"pixiu-panel/router/admin"
@@ -22,16 +22,17 @@ func init() {
 // main
 // @description: 启动入口
 func main() {
-	e := iris.Default()
-	validator.Init(e)
+	// 注册参数绑定错误信息翻译器
+	validator.Init()
+	app := gin.Default()
 
 	// 初始化后台路由
-	admin.InitRouter(e.Party("/admin/v1"))
+	admin.InitRouter(app.Group("/admin/v1"))
 	// 初始化开放接口路由
-	api.InitRouter(e.Party("/api/v1"))
+	api.InitRouter(app.Group("/api/v1"))
 
 	// 启动服务
-	if err := e.Listen(":1323"); err != nil {
+	if err := app.Run(":1323"); err != nil {
 		log.Errorf("服务启动失败：%v", err)
 		return
 	}

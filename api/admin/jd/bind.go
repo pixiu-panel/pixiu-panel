@@ -3,7 +3,7 @@ package jd
 import (
 	"encoding/json"
 	"gitee.ltd/lxh/logger/log"
-	"github.com/kataras/iris/v12"
+	"github.com/gin-gonic/gin"
 	"net/http"
 	"pixiu-panel/internal/bbk"
 	cacheCli "pixiu-panel/internal/cache"
@@ -19,7 +19,7 @@ import (
 // @description: 获取京东二维码
 // @param ctx
 // @return err
-func GetJdQrcode(ctx iris.Context) {
+func GetJdQrcode(ctx *gin.Context) {
 	// 取出登录用户Id
 	userId := ctx.Value("userId").(string)
 
@@ -54,9 +54,9 @@ func GetJdQrcode(ctx iris.Context) {
 // CheckBinding
 // @description: 检查绑定状态
 // @param ctx
-func CheckBinding(ctx iris.Context) {
+func CheckBinding(ctx *gin.Context) {
 	// 取出需要校验的Key
-	key := ctx.URLParam("key")
+	key := ctx.Param("key")
 	if key == "" {
 		response.New(ctx).SetMsg("参数错误").Fail()
 		return

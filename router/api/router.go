@@ -1,11 +1,9 @@
 package api
 
-import (
-	"github.com/kataras/iris/v12"
-)
+import "github.com/gin-gonic/gin"
 
 // InitRouter
 // @description: 初始化路由
-func InitRouter(g iris.Party) {
+func InitRouter(g *gin.RouterGroup) {
 
 }

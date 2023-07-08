@@ -3,11 +3,11 @@ package validator
 import (
 	"errors"
 	"gitee.ltd/lxh/logger/log"
+	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/locales/zh"
 	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
 	zhTranslations "github.com/go-playground/validator/v10/translations/zh"
-	"github.com/kataras/iris/v12"
 	"strings"
 )
 
@@ -19,7 +19,7 @@ var (
 
 // Init
 // @description: 初始化验证器
-func Init(app *iris.Application) {
+func Init() {
 	//注册翻译器
 	zhTranslator := zh.New()
 	uni = ut.New(zhTranslator, zhTranslator)
@@ -27,13 +27,12 @@ func Init(app *iris.Application) {
 	trans, _ = uni.GetTranslator("zh")
 
 	//获取gin的校验器
-	validate = validator.New()
+	validate = binding.Validator.Engine().(*validator.Validate)
 	//注册翻译器
 	err := zhTranslations.RegisterDefaultTranslations(validate, trans)
 	if err != nil {
 		log.Panicf("注册翻译器失败：%v", err)
 	}
-	app.Validator = validate
 }
 
 // Translate

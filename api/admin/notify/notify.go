@@ -2,19 +2,19 @@ package notify
 
 import (
 	"gitee.ltd/lxh/logger/log"
-	"github.com/kataras/iris/v12"
+	"github.com/gin-gonic/gin"
+	"pixiu-panel/model/param"
 	"pixiu-panel/pkg/response"
-	"pixiu-panel/pkg/validator"
 )
 
 // Binding
 // @description: 绑定推送渠道
 // @param ctx
 // @return err
-func Binding(ctx iris.Context) {
-	var p BindingNotify
-	if err := ctx.ReadBody(&p); err != nil {
-		response.New(ctx).SetMsg("参数错误").SetError(validator.Translate(err)).Fail()
+func Binding(ctx *gin.Context) {
+	var p param.BindingNotify
+	if err := ctx.ShouldBind(&p); err != nil {
+		response.New(ctx).SetMsg("参数错误").SetError(err).Fail()
 		return
 	}
 

@@ -1,8 +1,9 @@
 package response
 
 import (
-	"github.com/kataras/iris/v12"
+	"github.com/gin-gonic/gin"
 	"net/http"
+	"pixiu-panel/pkg/validator"
 )
 
 // 定义状态码
@@ -14,7 +15,7 @@ const (
 // Response
 // @description: 返回结果
 type Response struct {
-	ctx    iris.Context
+	ctx    *gin.Context
 	code   int
 	data   any
 	msg    string
@@ -25,7 +26,7 @@ type Response struct {
 // @description: 返回结果实现
 // @param ctx
 // @return Response
-func New(ctx iris.Context) *Response {
+func New(ctx *gin.Context) *Response {
 	var r Response
 	r.ctx = ctx
 
@@ -69,6 +70,7 @@ func (r *Response) SetMsg(msg string) *Response {
 // @return *Response
 func (r *Response) SetError(err error) *Response {
 	if err != nil {
+		err = validator.Translate(err)
 		r.errMsg = err.Error()
 	}
 	return r

@@ -1,7 +1,7 @@
 package jd
 
 import (
-	"github.com/kataras/iris/v12"
+	"github.com/gin-gonic/gin"
 	"pixiu-panel/model/param"
 	"pixiu-panel/pkg/response"
 	"pixiu-panel/service/jd"
@@ -10,7 +10,7 @@ import (
 // GetBind
 // @description: 获取用户绑定的京东账号
 // @param ctx
-func GetBind(ctx iris.Context) {
+func GetBind(ctx *gin.Context) {
 	var p param.PageUserJdAccount
 	p.Current = -1
 	p.Size = 10

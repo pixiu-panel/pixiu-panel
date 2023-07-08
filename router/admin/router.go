@@ -1,16 +1,16 @@
 package admin
 
 import (
-	"github.com/kataras/iris/v12"
+	"github.com/gin-gonic/gin"
 	"pixiu-panel/router/middleware"
 )
 
 // InitRouter
 // @description: 初始化路由
-func InitRouter(g iris.Party) {
-	login(g.Party("/login"))           // 登录相关接口
+func InitRouter(g *gin.RouterGroup) {
+	login(g.Group("/login"))           // 登录相关接口
 	g.Use(middleware.AuthorizeToken()) // 下面的接口需要登录才能访问
-	menu(g.Party("/menu"))             // 菜单相关接口
-	user(g.Party("/user"))             // 用户相关接口
-	jd(g.Party("/jd"))                 // 京东相关接口
+	menu(g.Group("/menu"))             // 菜单相关接口
+	user(g.Group("/user"))             // 用户相关接口
+	jd(g.Group("/jd"))                 // 京东相关接口
 }

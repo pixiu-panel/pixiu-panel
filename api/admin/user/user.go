@@ -2,9 +2,7 @@ package user
 
 import (
 	"gitee.ltd/lxh/logger/log"
-	"github.com/kataras/iris/v12"
-	"github.com/kataras/iris/v12/middleware/jwt"
-	"pixiu-panel/model/cache"
+	"github.com/gin-gonic/gin"
 	"pixiu-panel/pkg/response"
 )
 
@@ -12,10 +10,8 @@ import (
 // @description: 用户信息
 // @param ctx
 // @return err
-func Info(ctx iris.Context) {
+func Info(ctx *gin.Context) {
 	log.Debugf("收到获取用户信息请求")
-	claims := jwt.Get(ctx).(*cache.JwtCustomClaims)
-	name := claims.Username
 
-	response.New(ctx).SetData(name).Success()
+	response.New(ctx).SetData("").Success()
 }

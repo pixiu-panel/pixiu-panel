@@ -1,13 +1,13 @@
 package admin
 
 import (
-	"github.com/kataras/iris/v12"
+	"github.com/gin-gonic/gin"
 	userApi "pixiu-panel/api/admin/user"
 )
 
 // user
 // @description: 用户相关接口
 // @param g
-func user(g iris.Party) {
-	g.Get("", userApi.Info) // 登录用户信息
+func user(g *gin.RouterGroup) {
+	g.GET("", userApi.Info) // 登录用户信息
 }
