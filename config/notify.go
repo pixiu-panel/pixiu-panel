@@ -3,8 +3,9 @@ package config
 // notify
 // @description: 通知配置
 type notify struct {
-	Wechat wechat `json:"wechat" yaml:"wechat" mapstructure:"wechat"` // 微信机器人配置
-	QQ     qq     `json:"qq" yaml:"qq" mapstructure:"qq"`             // QQ机器人(go-cqhttp)配置
+	AllowTitle []string `json:"allowTitle" yaml:"allowTitle" mapstructure:"allowTitle"` // 允许的标题
+	Wechat     wechat   `json:"wechat" yaml:"wechat" mapstructure:"wechat"`             // 微信机器人配置
+	QQ         qq       `json:"qq" yaml:"qq" mapstructure:"qq"`                         // QQ机器人(go-cqhttp)配置
 }
 
 // wechat

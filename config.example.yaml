@@ -1,9 +1,3 @@
-# 系统配置
-system:
-  jwt:
-    # JWT加密密钥
-    secret: pixiu
-
 # 数据库配置
 db:
   type: mysql # 使用的数据库类型，可选 mysql | postgresql
@@ -40,6 +34,9 @@ bbk:
 
 # 通知配置
 notify:
+  allowTitle:
+    - 东东农场日常任务
+    - 京东资产变动
   wechat:
     host: http://10.0.0.71:19088
   qq:

@@ -11,6 +11,7 @@ import (
 func jd(g *gin.RouterGroup) {
 	bind := g.Group("/binding")
 	bind.GET("", jdApi.GetBind)                   // 获取用户绑定的京东账号
+	bind.POST("", jdApi.Update)                   // 修改用户绑定的京东账号信息
 	bind.DELETE("", jdApi.Delete)                 // 删除绑定的京东账号
 	bind.GET("/qrcode", jdApi.GetJdQrcode)        // 获取京东二维码
 	bind.GET("/qrcode/check", jdApi.CheckBinding) // 获取京东二维码扫描状态

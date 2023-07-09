@@ -5,3 +5,10 @@ package param
 type BindingNotify struct {
 	Type string `json:"type" validate:"required"`
 }
+
+// NotifyMessage
+// @description: 推送消息
+type NotifyMessage struct {
+	Title   string `json:"title" form:"title"`
+	Content string `json:"message" form:"message"`
+}
