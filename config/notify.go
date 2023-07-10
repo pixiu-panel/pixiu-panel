@@ -11,7 +11,8 @@ type notify struct {
 // wechat
 // @description: 微信机器人配置
 type wechat struct {
-	Host string `json:"host" yaml:"host" mapstructure:"host"` // 微信机器人地址
+	Host     string `json:"host" yaml:"host" mapstructure:"host"`             // 微信机器人地址
+	Callback string `json:"callback" yaml:"callback" mapstructure:"callback"` // 微信机器人消息回调地址
 }
 
 // qq

@@ -15,9 +15,9 @@ func TestGetJdUserInfo(t *testing.T) {
 		t.Fatal(err)
 	}
 	t.Log("用户信息获取成功")
-	t.Logf("Id: %s", ui.Data.UserInfo.BaseInfo.CurPin)
-	t.Logf("账号: %s", ui.Data.UserInfo.BaseInfo.Alias)
-	t.Logf("昵称: %s", ui.Data.UserInfo.BaseInfo.Nickname)
-	t.Logf("等级: %s", ui.Data.UserInfo.BaseInfo.LevelName)
-	t.Logf("是否 Plus 会员: %v", ui.Data.UserInfo.IsPlusVip == "1")
+	t.Logf("Id: %s", ui.UserInfo.BaseInfo.CurPin)
+	t.Logf("账号: %s", ui.UserInfo.BaseInfo.Alias)
+	t.Logf("昵称: %s", ui.UserInfo.BaseInfo.Nickname)
+	t.Logf("等级: %s", ui.UserInfo.BaseInfo.LevelName)
+	t.Logf("是否 Plus 会员: %v", ui.UserInfo.IsPlusVip == "1")
 }

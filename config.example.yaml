@@ -38,7 +38,10 @@ notify:
     - 东东农场日常任务
     - 京东资产变动
   wechat:
+    # 接口请求地址
     host: http://10.0.0.71:19088
+    # 手动设置回调地址(不写会默认取本机IP+服务端口组装，如果在容器内，可能会导致回调地址无法访问)
+    callback: http://10.11.0.2:1323/api/v1/notify/wechat
   qq:
     host: http://10.0.0.52:2333
     accessToken: xxx
