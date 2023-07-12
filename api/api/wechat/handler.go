@@ -34,7 +34,7 @@ func addFriendHandler(msg param.WechatCallback) {
 		return
 	}
 	// 组装redisKey
-	rdsKey := fmt.Sprintf("notify:bind:wechat:%s", addFriend.Content)
+	rdsKey := fmt.Sprintf("notify:bind:waiting:%s", addFriend.Content)
 	// 如果不存在，直接返回
 	if has, _ := redis.Client.Exists(context.Background(), rdsKey).Result(); has == 0 {
 		return
@@ -46,7 +46,7 @@ func addFriendHandler(msg param.WechatCallback) {
 		return
 	}
 	// 成功，修改Redis缓存数据，设置五分钟内过期
-	cacheMsg := fmt.Sprintf("{\"wxId\": \"%s\",\"nickname\":\"%s\"}", addFriend.FromUsername, addFriend.FromNickname)
+	cacheMsg := fmt.Sprintf("{\"account\": \"%s\",\"nickname\":\"%s\",\"type\":\"wechat\"}", addFriend.FromUsername, addFriend.FromNickname)
 	if err := redis.Client.Set(context.Background(), rdsKey, cacheMsg, 5*time.Minute).Err(); err != nil {
 		log.Errorf("修改Redis缓存数据失败: %v", err)
 	}

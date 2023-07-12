@@ -2,10 +2,13 @@ package notify
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"gitee.ltd/lxh/logger/log"
 	"github.com/gin-gonic/gin"
+	"pixiu-panel/internal/db"
 	"pixiu-panel/internal/redis"
+	"pixiu-panel/model/entity"
 	"pixiu-panel/model/param"
 	"pixiu-panel/pkg/response"
 	"pixiu-panel/utils"
@@ -26,11 +29,11 @@ func Binding(ctx *gin.Context) {
 
 	// 取出登录用户Id
 	userId := ctx.Value("userId").(string)
-	log.Debugf("收到绑定推送渠道请求，用户Id：%d", userId)
+	log.Debugf("收到绑定推送渠道请求，用户Id：%s", userId)
 
 	// 生成一个Code，作为校验用
 	code := utils.RandomUtils().GetRandomStringMini(6)
-	rdsKey := fmt.Sprintf("notify:bind:wechat:%s", code)
+	rdsKey := fmt.Sprintf("notify:bind:waiting:%s", code)
 	// 缓存一个空字符串，表示还没完成校验流程，有效期10分钟
 	if err := redis.Client.Set(context.Background(), rdsKey, "", 10*time.Minute).Err(); err != nil {
 		log.Errorf("存入Redis失败: %v", err)
@@ -52,7 +55,7 @@ func CheckBinding(ctx *gin.Context) {
 		return
 	}
 	// 判断key是否存在，不在了就是过期了
-	rdsKey := fmt.Sprintf("notify:bind:wechat:%s", code)
+	rdsKey := fmt.Sprintf("notify:bind:waiting:%s", code)
 	if has, _ := redis.Client.Exists(context.Background(), rdsKey).Result(); has == 0 {
 		response.New(ctx).SetMsg("已过期").Fail()
 		return
@@ -63,6 +66,26 @@ func CheckBinding(ctx *gin.Context) {
 		return
 	} else {
 		// 已经有数据了
-		response.New(ctx).SetData(val).Success()
+		var ui map[string]string
+		if err := json.Unmarshal([]byte(val), &ui); err != nil {
+			log.Errorf("解析Redis数据失败: %v", err)
+			response.New(ctx).SetMsg("绑定失败").SetError(err).Fail()
+			return
+		}
+
+		// 取出用户Id
+		userId := ctx.Value("userId").(string)
+		// 保存数据入库
+		var ent entity.UserNotify
+		ent.UserId = userId
+		ent.Channel = ui["type"]
+		ent.Param = ui["account"]
+		if err := db.Client.Create(&ent).Error; err != nil {
+			log.Errorf("保存数据失败: %v", err)
+			response.New(ctx).SetMsg("绑定失败").SetError(err).Fail()
+			return
+		}
+
+		response.New(ctx).SetData(ui).Success()
 	}
 }

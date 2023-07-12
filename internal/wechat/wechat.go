@@ -29,14 +29,14 @@ func SetCallback() {
 		"ip":         ip.String(), // 本机ip
 		"port":       "1323",      // Socket 端口，没啥用，因为用的是http回调，所以随便写个
 		"url":        callback,    // 回调地址
-		"timeOut":    5000,        // 超时时间(单位: 毫秒)
+		"timeout":    5000,        // 超时时间(单位: 毫秒)
 	}
 
 	client := resty.New()
 	resp, err := client.R().
 		SetHeader("Content-Type", "application/json").
-		SetQueryParam("type", "9").
 		SetBody(param).
+		SetQueryParam("type", "9").
 		Post(config.Conf.Notify.Wechat.Host + "/api/")
 	if err != nil {
 		log.Panicf("设置微信消息回调失败: %s", err.Error())

@@ -22,3 +22,15 @@ type WechatAddFriend struct {
 	EncryptUsername string `xml:"encryptusername,attr"` // V3数据，同意添加好友需要
 	Ticket          string `xml:"ticket,attr"`          // V4数据，同意添加好友需要
 }
+
+// QqCallback
+// @description: QQ消息回调
+type QqCallback struct {
+	PostType    string `json:"post_type"`    // 表示该上报的类型, 消息, 消息发送, 请求, 通知, 或元事件
+	RequestType string `json:"request_type"` // 请求类型
+	Time        int    `json:"time"`
+	SelfId      int    `json:"self_id"`
+	UserId      int    `json:"user_id"`
+	Comment     string `json:"comment"` // 添加好友时的验证信息
+	Flag        string `json:"flag"`    // 添加好友需要的数据
+}
