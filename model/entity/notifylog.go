@@ -10,7 +10,7 @@ type NotifyLog struct {
 	Pin     string `gorm:"column:pin;type:varchar(32);not null;comment:京东pin"`
 	Title   string `gorm:"column:title;type:varchar(255);not null;comment:标题"`
 	Content string `gorm:"column:content;type:varchar(500);not null;comment:内容"`
-	Status  string `gorm:"column:status;type:varchar(255);not null;comment:推送状态"` // JSON字符串，格式:[{"channel": true}]
+	Status  string `gorm:"column:status;type:varchar(255);not null;comment:推送状态"` // JSON字符串，格式:{"channel": true}
 }
 
 // TableName

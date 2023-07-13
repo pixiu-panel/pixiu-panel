@@ -18,7 +18,7 @@ import (
 // @return err
 func GetJdQrcode(ctx *gin.Context) {
 	// 取出登录用户Id
-	userId := ctx.Value("userId").(string)
+	userId := ctx.GetString("userId")
 
 	// 生成二维码
 	qrcode, err := bbk.GetJdQrcode()
@@ -77,7 +77,7 @@ func CheckBinding(ctx *gin.Context) {
 		response.New(ctx).SetMsg("参数错误").Fail()
 		return
 	}
-	if ctx.Value("userId").(string) != che["userId"].(string) {
+	if ctx.GetString("userId") != che["userId"].(string) {
 		response.New(ctx).SetCode(http.StatusForbidden).SetMsg("阁下意欲何为？").Fail()
 		return
 	}

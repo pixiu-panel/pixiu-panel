@@ -11,7 +11,7 @@ import (
 // @param ctx
 func Delete(ctx *gin.Context) {
 	// 获取参数
-	userId := ctx.Value("userId").(string)
+	userId := ctx.GetString("userId")
 	id := ctx.Param("id")
 
 	// 删除数据

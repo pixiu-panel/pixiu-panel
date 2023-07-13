@@ -14,7 +14,7 @@ func GetBind(ctx *gin.Context) {
 	var p param.PageUserJdAccount
 	p.Current = -1
 	p.Size = 10
-	p.UserId = ctx.Value("userId").(string)
+	p.UserId = ctx.GetString("userId")
 
 	// 查询数据
 	records, _, err := jd.GetBindByUser(p)

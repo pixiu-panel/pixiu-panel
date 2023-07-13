@@ -11,6 +11,7 @@ import (
 	"pixiu-panel/model/entity"
 	"pixiu-panel/model/param"
 	"pixiu-panel/pkg/response"
+	"pixiu-panel/service/notify"
 	"pixiu-panel/utils"
 	"time"
 	"unicode/utf8"
@@ -28,7 +29,7 @@ func Binding(ctx *gin.Context) {
 	}
 
 	// 取出登录用户Id
-	userId := ctx.Value("userId").(string)
+	userId := ctx.GetString("userId")
 	log.Debugf("收到绑定推送渠道请求，用户Id：%s", userId)
 
 	// 生成一个Code，作为校验用
@@ -74,7 +75,7 @@ func CheckBinding(ctx *gin.Context) {
 		}
 
 		// 取出用户Id
-		userId := ctx.Value("userId").(string)
+		userId := ctx.GetString("userId")
 		// 保存数据入库
 		var ent entity.UserNotify
 		ent.UserId = userId
@@ -88,4 +89,17 @@ func CheckBinding(ctx *gin.Context) {
 
 		response.New(ctx).SetData(ui).Success()
 	}
+}
+
+// GetBindingAccounts
+// @description: 获取绑定的推送渠道
+// @param ctx
+func GetBindingAccounts(ctx *gin.Context) {
+	records, err := notify.GetNotifyChannel(ctx.GetString("userId"))
+	if err != nil {
+		log.Errorf("获取绑定的推送渠道失败: %v", err)
+		response.New(ctx).SetMsg("获取绑定的推送渠道失败").SetError(err).Fail()
+		return
+	}
+	response.New(ctx).SetData(records).Success()
 }

@@ -1,6 +1,7 @@
 package notify
 
 import (
+	"encoding/json"
 	"gitee.ltd/lxh/logger/log"
 	"pixiu-panel/internal/db"
 	"pixiu-panel/model/entity"
@@ -25,9 +26,15 @@ func sendNotify(logs []entity.NotifyLog) {
 	for _, l := range logs {
 		log.Debugf("发送通知: %s --> %s", l.Id, l.Pin)
 		if configs, ok := notifyConfigMap[l.UserId]; ok {
+			pushStatusMap := make(map[string]bool)
 			for _, c := range configs {
 				log.Debugf("消息 Id: %s --> 推送渠道: %s", l.Id, c.Channel)
+				// TODO 推送消息
+				pushStatusMap[c.Channel] = true
 			}
+			bs, _ := json.Marshal(pushStatusMap)
+			// 更新推送记录
+			db.Client.Model(&entity.NotifyLog{}).Where("id = ?", l.Id).Update("status", string(bs))
 		} else {
 			log.Debugf("用户 Id: %s 未找到推送配置", l.UserId)
 		}
