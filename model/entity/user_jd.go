@@ -7,7 +7,7 @@ import "pixiu-panel/pkg/types"
 type UserJd struct {
 	types.BaseDbModel
 	UserId     string          `json:"userId" gorm:"type:varchar(32);not null;comment:'用户id'"`
-	Pin        string          `json:"pin" gorm:"type:varchar(255);not null;comment:'京东pin'"`
+	Pin        string          `json:"pin" gorm:"index:deleted,unique;type:varchar(255);not null;comment:'京东pin'"`
 	Nickname   string          `json:"nickname" gorm:"type:varchar(255);not null;comment:'京东昵称'"`
 	Avatar     string          `json:"avatar" gorm:"type:varchar(255);not null;comment:'京东头像'"`
 	Level      string          `json:"level" gorm:"type:varchar(255);not null;comment:'京东等级'"`
