@@ -20,7 +20,7 @@ func saveMsgToDb(title string, msg []string) (err error) {
 		// 匹配出带账号的行
 		accountLine := regexp.MustCompile(`(【)?(京东)?账号\d+(】)?.*`).FindString(m)
 		// 去掉前缀
-		pin := regexp.MustCompile(`【?(京东)?账号.*】`).ReplaceAllString(accountLine, "")
+		pin := regexp.MustCompile(`(【)?(京东)?账号.*([】 ])`).ReplaceAllString(accountLine, "")
 		// 去掉是否实名信息
 		pin = regexp.MustCompile(`\(wskey.*\)?`).ReplaceAllString(pin, "")
 		if pin == "" {
