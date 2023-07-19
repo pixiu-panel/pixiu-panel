@@ -1,6 +1,7 @@
 package notify
 
 import (
+	"database/sql"
 	"gitee.ltd/lxh/logger/log"
 	"pixiu-panel/internal/db"
 	"pixiu-panel/model/entity"
@@ -31,10 +32,9 @@ func saveMsgToDb(title string, msg []string) (err error) {
 		m = strings.ReplaceAll(m, "\n\n", "")
 
 		// 根据 pin 查出 userId
-		var userId string
-		err = db.Client.Model(entity.UserJd{}).
-			Where("pin = ?", pin).
-			Select("user_id").Pluck("user_id", &userId).Error
+		var jdAccount entity.UserJd
+		err = db.Client.Where("pin = @pin OR nickname = @pin", sql.Named("pin", pin)).
+			First(&jdAccount).Error
 		if err != nil {
 			log.Errorf("[%s]查询用户id失败: %s", pin, err.Error())
 			continue
@@ -42,8 +42,8 @@ func saveMsgToDb(title string, msg []string) (err error) {
 
 		// 添加记录信息
 		logs = append(logs, entity.NotifyLog{
-			UserId:  userId,
-			Pin:     pin,
+			UserId:  jdAccount.UserId,
+			Pin:     jdAccount.Pin,
 			Title:   title,
 			Content: m,
 			Status:  "",

@@ -103,3 +103,21 @@ func GetBindingAccounts(ctx *gin.Context) {
 	}
 	response.New(ctx).SetData(records).Success()
 }
+
+// DeleteBindingAccount
+// @description: 删除绑定的推送渠道
+// @param ctx
+func DeleteBindingAccount(ctx *gin.Context) {
+	var id string
+	if id = ctx.Param("id"); utf8.RuneCountInString(id) != 32 {
+		response.New(ctx).SetMsg("参数错误").Fail()
+		return
+	}
+
+	if err := notify.DeleteChannel(id); err != nil {
+		log.Errorf("删除绑定的推送渠道失败: %v", err)
+		response.New(ctx).SetMsg("删除绑定的推送渠道失败").SetError(err).Fail()
+		return
+	}
+	response.New(ctx).Success()
+}

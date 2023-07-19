@@ -9,8 +9,9 @@ import (
 // @description: 通知相关接口
 // @param g
 func notify(g *gin.RouterGroup) {
-	g.POST("", notifyApi.Binding)           // 绑定微信预请求
-	g.GET("", notifyApi.GetBindingAccounts) // 获取已绑定的推送渠道
-	g.GET("/check", notifyApi.CheckBinding) // 检查绑定结果
-	g.GET("/log", notifyApi.PageNotifyLog)  // 分页获取消息通知日志
+	g.POST("", notifyApi.Binding)                    // 绑定微信预请求
+	g.GET("", notifyApi.GetBindingAccounts)          // 获取已绑定的推送渠道
+	g.GET("/check", notifyApi.CheckBinding)          // 检查绑定结果
+	g.DELETE("/:id", notifyApi.DeleteBindingAccount) // 删除已绑定的推送渠道
+	g.GET("/log", notifyApi.PageNotifyLog)           // 分页获取消息通知日志
 }
