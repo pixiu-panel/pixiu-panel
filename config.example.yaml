@@ -1,3 +1,12 @@
+# 系统配置
+system:
+  # 注册
+  register:
+    # 是否允许注册
+    enable: false
+    # 是否启用注册码
+    invitationCode: false
+
 # 数据库配置
 db:
   type: mysql # 使用的数据库类型，可选 mysql | postgresql

@@ -9,7 +9,8 @@ import (
 // @description: 登录相关接口
 // @param g
 func login(g *gin.RouterGroup) {
-	g.POST("", loginApi.Login)           // 登录
-	g.POST("/refresh", loginApi.Refresh) // 刷新Token
-	g.POST("/logout", loginApi.Logout)   // 退出登录
+	g.POST("/register", loginApi.Register) // 注册
+	g.POST("", loginApi.Login)             // 登录
+	g.POST("/refresh", loginApi.Refresh)   // 刷新Token
+	g.POST("/logout", loginApi.Logout)     // 退出登录
 }
