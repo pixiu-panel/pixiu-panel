@@ -10,17 +10,17 @@ system:
 # 数据库配置
 db:
   type: mysql # 使用的数据库类型，可选 mysql | postgresql
-  host: 10.0.0.31 # 数据库地址
+  host: mysql # 数据库地址(使用docker-compose启动可以不用改)
   port: 3306 # 数据库端口
   username: pixiu # 数据库用户名
-  password: pixiu123 # 数据库密码
+  password: pixiu # 数据库密码
   database: pixiu # 数据库名
 
 # Redis配置
 redis:
-  host: 10.0.0.31
-  port: 6379
-  password: xxx
+  host: redis # Redis地址(使用docker-compose启动可以不用改)
+  port: 6379 # Redis端口
+  password: mNhgeSk32fUf69C6
   db: 0
 
 # 青龙配置
