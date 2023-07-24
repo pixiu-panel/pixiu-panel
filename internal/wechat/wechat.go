@@ -97,3 +97,29 @@ func AcceptAddFriend(v3, v4 string) (err error) {
 
 	return
 }
+
+// SendMessage
+// @description: 发送消息
+// @param wxId string 微信Id
+// @param msg string 消息内容
+// @return err error 错误信息
+func SendMessage(wxId, msg string) (err error) {
+	// 发送消息参数
+	param := map[string]any{
+		"wxid": wxId,
+		"msg":  msg,
+	}
+
+	// 调用接口
+	client := resty.New()
+	//var resp *resty.Response
+	_, err = client.R().
+		SetHeader("Content-Type", "application/json").
+		SetBody(param).
+		SetQueryParam("type", "2").
+		Post(config.Conf.Notify.Wechat.Host + "/api/")
+	if err != nil {
+		log.Errorf("消息推送失败: %s", err.Error())
+	}
+	return
+}
