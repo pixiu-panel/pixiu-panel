@@ -1,0 +1,55 @@
+version: "3"
+
+networks:
+  pixiu:
+
+services:
+  mysql:
+    container_name: pixiu-mysql
+    image: mysql:latest
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=YTjyeYsaGjTM57JZ # root密码
+      - MYSQL_USER=pixiu # 面板数据库用户名
+      - MYSQL_PASSWORD=pixiu # 面板数据库密码(如果需要开放出来，请修改为强密码)
+      - MYSQL_DATABASE=pixiu # 面板数据库名(需要和配置文件里面对应上)
+    volumes:
+      - ./mysql:/var/lib/mysql
+    networks:
+      - pixiu
+
+  redis:
+    container_name: pixiu-redis
+    image: redis:alpine
+    restart: unless-stopped
+    command: redis-server --appendonly yes --requirepass "mNhgeSk32fUf69C6"
+    volumes:
+      - ./redis:/data
+    networks:
+      - pixiu
+
+  api:
+    container_name: pixiu-api
+    image: lxh01/pixiu-panel:latest
+    restart: unless-stopped
+    depends_on:
+      - mysql
+      - redis
+    volumes:
+      - ./config/config.yaml:/app/config.yaml
+      - ./logs:/app/logs
+    ports:
+      - "1323:1323"
+    networks:
+      - pixiu
+
+  web:
+    container_name: pixiu-web
+    image: lxh01/pixiu-panel-web:latest
+    restart: unless-stopped
+    depends_on:
+      - api
+    ports:
+      - "1080:80"
+    networks:
+      - pixiu

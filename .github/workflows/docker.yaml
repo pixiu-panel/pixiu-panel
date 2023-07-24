@@ -27,7 +27,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          build-args: APP_VERSION=${{ env.APP_VERSION }}
+          build-args: APP_VER=${{ env.APP_VERSION }}
           tags: |
             lxh01/pixiu-panel:latest
             lxh01/pixiu-panel:${{ env.APP_VERSION }}
