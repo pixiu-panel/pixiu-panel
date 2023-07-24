@@ -22,7 +22,7 @@ services:
     container_name: pixiu-redis
     image: redis:alpine
     restart: unless-stopped
-    command: redis-server --appendonly yes --requirepass "mNhgeSk32fUf69C6"
+    command: redis-server --appendonly yes --requirepass "mNhgeSk32fUf69C6" # Redis密码请自行修改然后对应上配置文件
     volumes:
       - ./redis:/data
     networks:
