@@ -10,10 +10,11 @@ import (
 // @description: 初始化数据库表
 func databaseTable() {
 	tables := []any{
-		new(entity.User),       // 用户表
-		new(entity.UserNotify), // 用户推送配置表
-		new(entity.UserJd),     // 用户京东账号绑定表
-		new(entity.NotifyLog),  // 推送记录表
+		new(entity.User),           // 用户表
+		new(entity.UserNotify),     // 用户推送配置表
+		new(entity.UserJd),         // 用户京东账号绑定表
+		new(entity.NotifyLog),      // 推送记录表
+		new(entity.InvitationCode), // 邀请码
 	}
 
 	// 同步表结构

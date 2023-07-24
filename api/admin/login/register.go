@@ -1,11 +1,11 @@
 package login
 
 import (
-	"gitee.ltd/lxh/logger/log"
 	"github.com/gin-gonic/gin"
 	"pixiu-panel/config"
 	"pixiu-panel/model/param"
 	"pixiu-panel/pkg/response"
+	"pixiu-panel/service/user"
 )
 
 // Register
@@ -22,12 +22,12 @@ func Register(ctx *gin.Context) {
 		response.New(ctx).SetMsg("参数错误").SetError(err).Fail()
 		return
 	}
-	// 如果启用了邀请码，校验一下
-	if config.Conf.System.Register.InvitationCode {
-		log.Debugf("邀请码: %s", p.InvitationCode)
-	}
 
-	// 查询用户是否存在
+	// 注册
+	if err := user.Register(p); err != nil {
+		response.New(ctx).SetMsg("注册失败").SetError(err).Fail()
+		return
+	}
 
 	response.New(ctx).Success()
 }
