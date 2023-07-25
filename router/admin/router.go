@@ -14,4 +14,5 @@ func InitRouter(g *gin.RouterGroup) {
 	user(g.Group("/user"))             // 用户相关接口
 	jd(g.Group("/jd"))                 // 京东相关接口
 	notify(g.Group("/notify"))         // 通知相关接口
+	invitation(g.Group("/invitation")) // 邀请码相关接口
 }
