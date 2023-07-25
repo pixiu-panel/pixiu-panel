@@ -23,4 +23,9 @@ type JdUserInfo struct {
 		} `json:"baseInfo"` // 基础信息
 		IsPlusVip string `json:"isPlusVip"` // 是否是 Plus 会员
 	} `json:"userInfo"` // 用户信息
+	AssetInfo struct {
+		BeanNum    string `json:"beanNum"`    // 京豆数量
+		RedBalance string `json:"redBalance"` // 红包余额
+		CouponNum  string `json:"couponNum"`  // 优惠券数量
+	} `json:"assetInfo"` // 资产信息
 }
