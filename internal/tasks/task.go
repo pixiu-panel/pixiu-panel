@@ -14,8 +14,8 @@ func StartScheduled() {
 
 	// 每5分钟检测一次京东账号状态
 	_, _ = s.Every("5m").Do(updateJdAccount)
-	// 每周一凌晨一点更新一次京东账号基础信息
-	_, _ = s.Every(1).Monday().At("01:00").Do(updateJdAccountInfo)
+	// 每天0点更新一次京东账号基础信息
+	_, _ = s.Every(1).Days().At("00:00").Do(updateJdAccountInfo)
 
 	// 开启定时任务
 	s.StartAsync()
