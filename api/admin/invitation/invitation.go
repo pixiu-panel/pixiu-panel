@@ -16,6 +16,9 @@ func Page(ctx *gin.Context) {
 		response.New(ctx).SetMsg("参数错误").SetError(err).Fail()
 		return
 	}
+	if p.UserId == "mine" {
+		p.UserId = ctx.GetString("userId")
+	}
 
 	records, total, err := invitation.Page(p)
 	if err != nil {
