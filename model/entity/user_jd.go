@@ -18,6 +18,9 @@ type UserJd struct {
 	QlCookieId int             `json:"qlCookieId" gorm:"type:int(11);not null;comment:'青龙cookie环境变量id'"`
 	QlWsckId   int             `json:"qlWsckId" gorm:"type:int(11);not null;comment:'青龙wsck环境变量id'"`
 	Cookie     string          `json:"cookie" gorm:"type:varchar(500);not null;comment:'cookie'"`
+	BeanNum    int             `json:"beanNum" gorm:"type:int(11);not null;default:0;comment:'京豆数量'"`
+	RedBalance float64         `json:"redBalance" gorm:"type:decimal(10,2);not null;default:0;comment:'红包余额'"`
+	CouponNum  int             `json:"couponNum" gorm:"type:int(11);not null;default:0;comment:'优惠券数量'"`
 }
 
 // TableName
