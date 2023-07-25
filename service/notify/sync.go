@@ -39,9 +39,9 @@ func sendNotify(logs []entity.NotifyLog) {
 				// 策略发送
 				switch c.Channel {
 				case "wechat":
-					pushStatusMap[c.Channel] = wechat.SendMessage(c.Param, msg) != nil
+					pushStatusMap[c.Channel] = wechat.SendMessage(c.Param, msg) == nil
 				case "qq":
-					pushStatusMap[c.Channel] = qq.SendMessage(c.Param, msg) != nil
+					pushStatusMap[c.Channel] = qq.SendMessage(c.Param, msg) == nil
 				default:
 					pushStatusMap[c.Channel] = false
 				}
