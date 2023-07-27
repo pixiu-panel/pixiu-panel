@@ -1,5 +1,11 @@
 package param
 
+// PageUser
+// @description: 分页查询用户
+type PageUser struct {
+	page
+}
+
 // ChangePassword
 // @description:
 type ChangePassword struct {

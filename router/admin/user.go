@@ -9,6 +9,7 @@ import (
 // @description: 用户相关接口
 // @param g
 func user(g *gin.RouterGroup) {
-	g.GET("", userApi.Info)                     // 登录用户信息
 	g.POST("/password", userApi.ChangePassword) // 修改密码
+	g.GET("/page", userApi.Page)                // 获取用户列表
+	g.DELETE("/:id", userApi.Delete)            // 删除用户
 }
