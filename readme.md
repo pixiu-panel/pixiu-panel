@@ -2,7 +2,7 @@
 
 `pixiu`面板，一个对接了`青龙`、`BBK`的管理面板
 
-### [预览地址](https://pixiu.lxh.io)
+### [预览地址](https://pixiu.lixh.ltd) | [Telegram群](https://t.me/+AMynpmyopH0xYTVl)
 
 ## 我能干啥
 
