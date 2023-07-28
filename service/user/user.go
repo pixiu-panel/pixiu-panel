@@ -26,11 +26,10 @@ func GetUserWithLogin(keyword string) (ent entity.User, err error) {
 // @return err
 func Page(p param.PageUser) (records []vo.User, total int64, err error) {
 	tx := db.Client.Scopes(orm.Page(p.Current, p.Size)).Table("t_user AS u").
-		Joins("LEFT JOIN t_user_jd AS jd ON jd.user_id = u.id").
+		Joins("LEFT JOIN t_user_jd AS jd ON jd.user_id = u.id AND jd.is_del = 0").
 		Joins("LEFT JOIN t_user_notify AS notify ON notify.user_id = u.id").
 		Select("u.*", "COUNT(DISTINCT jd.id) AS bind_jd_count", "COUNT(DISTINCT notify.id) AS bind_notify_count").
 		Where("u.is_del = 0").
-		Where("jd.is_del = 0").
 		Group("u.id").
 		Order("u.created_at DESC")
 
