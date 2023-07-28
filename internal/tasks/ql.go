@@ -77,6 +77,8 @@ func updateJdAccount() {
 		}
 	}
 
+	// 处理过期通知
+	expiredNotify(expiredPins...)
 }
 
 // expiredNotify
