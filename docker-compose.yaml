@@ -28,6 +28,19 @@ services:
     networks:
       - pixiu
 
+  # 教程: https://t.me/c/1947981383/193
+  bbk-jd-qr:
+    container_name: bbk-jd-qr
+    image: neuynp8oido4ejj/jd-qr:latest
+    restart: unless-stopped
+    environment:
+      - TZ=Asia/Shanghai
+#    ports:
+#      - "5702:81"
+    volumes:
+      - ./bbk/conf:/data/conf
+      - ./bbk/logs:/data/logs
+
   api:
     container_name: pixiu-api
     image: lxh01/pixiu-panel:latest
