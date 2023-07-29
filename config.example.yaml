@@ -3,7 +3,7 @@ system:
   # 注册
   register:
     # 是否允许注册
-    enable: false
+    enable: true
     # 是否启用注册码
     invitationCode: false
 
@@ -33,12 +33,13 @@ ql:
 bbk:
   jdQr:
     enable: true
-    host: http://10.0.0.52:5701
+    host: http://bbk-jd-qr:81
+  # 下面两种还没实现
   wechatQr:
-    enable: true
+    enable: false
     host: http://10.0.0.52:5702
   sms:
-    enable: true
+    enable: false
     host: http://10.0.0.52:5703
 
 # 通知配置

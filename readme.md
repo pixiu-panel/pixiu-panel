@@ -24,10 +24,11 @@
 2. 将`config.example.yaml`文件改名为`config.yaml`，然后放在`docker-compose.yaml`同级目录下的`config`目录(手动新建)
    ，然后酌情修改配置。
 3. 执行`docker compose up -d`命令(`docker`需要安装有`docker-compose`插件)。
-4. 打开浏览器访问`http://{ip}:1080`即可
+4. 打开浏览器访问`http://{ip}:1080`即可(默认账号: `pixiu`，密码:`pixiu123`)。
 
 ## 小tips
 
+- [Docker安装教程](https://note.lxh.io/share/DJxn7zWaRtOt)(镜像源三选一即可，`授权非root账户使用docker命令`非必须)
 - 修改配置文件可不用重启项目，会自动更新
 - 青龙需要自行搭建
 
