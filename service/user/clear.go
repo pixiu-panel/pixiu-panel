@@ -14,6 +14,7 @@ func ClearEmptyUser() {
 
 	err := db.Client.Where("id NOT IN (?)", subQueryJd).
 		Where("id NOT IN (?)", subQueryNotify).
+		Where("`role` != 'admin'").
 		Delete(&entity.User{}).Error
 	if err != nil {
 		log.Errorf("清理空用户失败: %v", err)
