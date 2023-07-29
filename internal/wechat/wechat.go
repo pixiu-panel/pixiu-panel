@@ -13,7 +13,7 @@ import (
 // @description: 设置微信消息回调
 func SetCallback() {
 	// 如果没配置微信推送渠道，则不执行
-	if config.Conf.Notify.Wechat.Host == "" {
+	if !config.Conf.Notify.Wechat.Enable || config.Conf.Notify.Wechat.Host == "" {
 		return
 	}
 	// 获取本机ip
@@ -49,7 +49,7 @@ func SetCallback() {
 // @description: 清除微信消息回调
 func ClearCallback() {
 	// 如果没配置微信推送渠道，则不执行
-	if config.Conf.Notify.Wechat.Host == "" {
+	if !config.Conf.Notify.Wechat.Enable || config.Conf.Notify.Wechat.Host == "" {
 		return
 	}
 
