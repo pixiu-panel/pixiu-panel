@@ -49,6 +49,7 @@ notify:
     - 京东资产变动
     - 京东价保
   wechat:
+    # 微信HOOK，自行使用wxhelper搭建
     enable: false
     qrCode: xxx # 这儿填添加好友的二维码解码后的内容，解码可以在草料二维码解码：https://cli.im/deqr/other
     # 接口请求地址
@@ -56,7 +57,25 @@ notify:
     # 手动设置回调地址(不写会默认取本机IP+服务端口组装，如果在容器内，可能会导致回调地址无法访问)
     callback: http://10.11.0.2:1323/api/v1/notify/wechat
   qq:
+    # QQ机器人，自行使用go-cqhttp搭建
     enable: false
     qrCode: xxx # 这儿填添加好友的二维码解码后的内容，解码可以在草料二维码解码：https://cli.im/deqr/other
     host: http://10.0.0.52:2333
     accessToken: xxx
+  ftqq:
+    # 方糖气球，又叫Server酱
+    enable: true
+  pushDeer:
+    # PushDeer
+    enable: true
+    host: # 自建服务器地址，为空则使用官方地址(https://api2.pushdeer.com/message/push)
+  pushPlus:
+    # PushPlus
+    enable: true
+  smtp:
+    # 邮件
+    enable: true
+    host: smtp.qq.com
+    ssl: true
+    email: xx
+    password: xx
