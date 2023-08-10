@@ -17,6 +17,7 @@ require (
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/go-resty/resty/v2 v2.7.0
 	github.com/google/uuid v1.3.0
+	github.com/jordan-wright/email v4.0.1-0.20210109023952-943e75fe5223+incompatible
 	github.com/spf13/viper v1.16.0
 	github.com/vmihailenco/msgpack/v5 v5.3.5
 	golang.org/x/crypto v0.9.0

@@ -6,10 +6,9 @@ import (
 	"github.com/duke-git/lancet/v2/slice"
 	"net/url"
 	"pixiu-panel/internal/db"
+	"pixiu-panel/internal/notify"
 	"pixiu-panel/internal/ql"
 	"pixiu-panel/internal/ql/model"
-	"pixiu-panel/internal/qq"
-	"pixiu-panel/internal/wechat"
 	"pixiu-panel/model/entity"
 	"strings"
 )
@@ -59,6 +58,13 @@ func updateJdAccount() {
 	log.Debugf("共获取到 %d 个京东账户", len(envMap))
 	var expiredPins []string
 	for pin, data := range envMap {
+		// 取出上一次的数据
+		var last entity.UserJd
+		if err := db.Client.Where("pin = ?", pin).First(&last).Error; err != nil {
+			log.Errorf("获取上一次的京东账户信息失败: %v", err)
+			continue
+		}
+
 		pm := make(map[string]any)
 		pm["expired"] = data["cookie"].Status == 1
 		pm["last_update"] = data["wsck"].UpdatedAt
@@ -71,8 +77,9 @@ func updateJdAccount() {
 			log.Errorf("更新京东账户信息失败: %v", err)
 		}
 
-		if data["cookie"].Status == 1 {
-			// 过期了
+		// 通知过期消息，如果上一次也是过期，就不通知了
+		if data["cookie"].Status == 1 && !last.Expired {
+			// 添加需要通知的账号
 			expiredPins = append(expiredPins, pin)
 		}
 	}
@@ -118,7 +125,7 @@ func expiredNotify(pin ...string) {
 
 	// 循环过期账号数据，发送推送
 	for userId, jdArray := range jdMap {
-		var baseMsgArray = []string{"您的京东账号已过期"}
+		var baseMsgArray = make([]string, 0)
 		for _, jd := range jdArray {
 			nickname := jd.Nickname
 			if jd.Remark != "" {
@@ -130,14 +137,7 @@ func expiredNotify(pin ...string) {
 		if css, ok := channelMap[userId]; ok {
 			for _, c := range css {
 				// 策略发送
-				switch c.Channel {
-				case "wechat":
-					_ = wechat.SendMessage(c.Param, strings.Join(baseMsgArray, "\n"))
-				case "qq":
-					_ = qq.SendMessage(c.Param, strings.Join(baseMsgArray, "\n"))
-				default:
-					continue
-				}
+				_ = notify.New(c.Channel, c.Param).Send("您的京东账号已过期", strings.Join(baseMsgArray, "\n"))
 			}
 		}
 	}

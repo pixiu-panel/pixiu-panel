@@ -2,11 +2,9 @@ package notify
 
 import (
 	"encoding/json"
-	"fmt"
 	"gitee.ltd/lxh/logger/log"
 	"pixiu-panel/internal/db"
-	"pixiu-panel/internal/qq"
-	"pixiu-panel/internal/wechat"
+	"pixiu-panel/internal/notify"
 	"pixiu-panel/model/entity"
 )
 
@@ -35,16 +33,19 @@ func sendNotify(logs []entity.NotifyLog) {
 				// 推送消息
 				//pushStatusMap[c.Channel] = true
 				// 手动组装一下消息内容
-				msg := fmt.Sprintf("%s\n%s", l.Title, l.Content)
+				// msg := fmt.Sprintf("%s\n%s", l.Title, l.Content)
 				// 策略发送
-				switch c.Channel {
-				case "wechat":
-					pushStatusMap[c.Channel] = wechat.SendMessage(c.Param, msg) == nil
-				case "qq":
-					pushStatusMap[c.Channel] = qq.SendMessage(c.Param, msg) == nil
-				default:
-					pushStatusMap[c.Channel] = false
-				}
+				//switch c.Channel {
+				//case "wechat":
+				//	pushStatusMap[c.Channel] = wechat.SendMessage(c.Param, msg) == nil
+				//case "qq":
+				//	pushStatusMap[c.Channel] = qq.SendMessage(c.Param, msg) == nil
+				//default:
+				//	pushStatusMap[c.Channel] = false
+				//}
+
+				// 发送通知
+				pushStatusMap[c.Channel] = notify.New(c.Channel, c.Param).Send(l.Title, l.Content) == nil
 			}
 			bs, _ := json.Marshal(pushStatusMap)
 			// 更新推送记录
