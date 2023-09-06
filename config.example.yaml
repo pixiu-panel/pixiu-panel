@@ -1,5 +1,7 @@
 # 系统配置
 system:
+  # 绑定域名，推送消息用
+  domain: "https://pixiu.lixh.ltd"
   # 注册
   register:
     # 是否允许注册
