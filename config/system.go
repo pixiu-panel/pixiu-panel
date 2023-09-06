@@ -3,6 +3,7 @@ package config
 // system
 // @description: 系统配置
 type system struct {
+	Domain   string   `json:"domain" yaml:"domain" mapstructure:"domain"`       // 绑定域名
 	Register register `json:"register" yaml:"register" mapstructure:"register"` // 注册配置
 }
 
