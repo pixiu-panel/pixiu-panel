@@ -26,7 +26,7 @@ func (s wechat) Send(title, content string) (err error) {
 		return
 	}
 	// 组装消息
-	msg := fmt.Sprintf("%s\n%s", title, content)
+	msg := fmt.Sprintf("%s\n \n%s", title, content)
 	// 发送消息
 	return wechatService.SendMessage(s.wxId, msg)
 }

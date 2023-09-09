@@ -112,12 +112,13 @@ func SendMessage(wxId, msg string) (err error) {
 
 	// 调用接口
 	client := resty.New()
-	//var resp *resty.Response
-	_, err = client.R().
+	var resp *resty.Response
+	resp, err = client.R().
 		SetHeader("Content-Type", "application/json").
 		SetBody(param).
 		SetQueryParam("type", "2").
 		Post(config.Conf.Notify.Wechat.Host + "/api/")
+	log.Debugf("发送消息结果: %s", resp.String())
 	if err != nil {
 		log.Errorf("消息推送失败: %s", err.Error())
 	}
