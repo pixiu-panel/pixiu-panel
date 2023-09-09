@@ -39,5 +39,5 @@ func MessageNotify(ctx *gin.Context) {
 	}
 
 	// 返回成功
-	response.New(ctx).Success()
+	response.New(ctx).SetMsg("已抄收").Success()
 }

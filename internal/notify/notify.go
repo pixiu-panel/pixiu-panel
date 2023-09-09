@@ -2,7 +2,6 @@ package notify
 
 import (
 	"encoding/json"
-	"pixiu-panel/config"
 )
 
 // send
@@ -17,9 +16,6 @@ type send interface {
 // @param params 通知参数
 // @return send 通知发送接口
 func New(channel, param string) send {
-	// 在消息末尾增加固定消息
-	param += " \n由'貔貅面板'提供支持\n后台地址: " + config.Conf.System.Domain
-
 	switch channel {
 	case "wechat":
 		// 微信通知

@@ -19,10 +19,12 @@ func SendMessage(qq, msg string) (err error) {
 	}
 
 	client := resty.New()
-	_, err = client.R().
+	var resp *resty.Response
+	resp, err = client.R().
 		SetHeader("Content-Type", "application/json").
 		SetBody(param).
 		Post(config.Conf.Notify.QQ.Host + "/send_private_msg")
+	log.Debugf("QQ消息发送结果: %s", resp.String())
 	if err != nil {
 		log.Errorf("给[%s]的消息发送失败: %s", qq, err.Error())
 	}

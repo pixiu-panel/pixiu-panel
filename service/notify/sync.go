@@ -3,6 +3,7 @@ package notify
 import (
 	"encoding/json"
 	"gitee.ltd/lxh/logger/log"
+	"pixiu-panel/config"
 	"pixiu-panel/internal/db"
 	"pixiu-panel/internal/notify"
 	"pixiu-panel/model/entity"
@@ -26,24 +27,14 @@ func sendNotify(logs []entity.NotifyLog) {
 	// 挨个推送
 	for _, l := range logs {
 		log.Debugf("发送通知: %s --> %s", l.Id, l.Pin)
+
+		// 在消息末尾增加固定消息
+		l.Content += "\n \n由'貔貅面板'提供支持\n后台地址: " + config.Conf.System.Domain
+
 		if configs, ok := notifyConfigMap[l.UserId]; ok {
 			pushStatusMap := make(map[string]bool)
 			for _, c := range configs {
 				log.Debugf("消息 Id: %s --> 推送渠道: %s", l.Id, c.Channel)
-				// 推送消息
-				//pushStatusMap[c.Channel] = true
-				// 手动组装一下消息内容
-				// msg := fmt.Sprintf("%s\n%s", l.Title, l.Content)
-				// 策略发送
-				//switch c.Channel {
-				//case "wechat":
-				//	pushStatusMap[c.Channel] = wechat.SendMessage(c.Param, msg) == nil
-				//case "qq":
-				//	pushStatusMap[c.Channel] = qq.SendMessage(c.Param, msg) == nil
-				//default:
-				//	pushStatusMap[c.Channel] = false
-				//}
-
 				// 发送通知
 				pushStatusMap[c.Channel] = notify.New(c.Channel, c.Param).Send(l.Title, l.Content) == nil
 			}
