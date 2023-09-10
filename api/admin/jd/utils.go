@@ -2,6 +2,7 @@ package jd
 
 import (
 	"encoding/json"
+	"net/url"
 	"pixiu-panel/internal/bbk"
 	cacheCli "pixiu-panel/internal/cache"
 	"pixiu-panel/model/cache"
@@ -55,8 +56,8 @@ func checkJdBindStatus(key string) {
 			if len(pinMatch) != 2 {
 				che["status"] = 3 // 标记为绑定失败
 			} else {
-				// 缓存用户PIN
-				che["pin"] = pinMatch[1]
+				// 缓存用户PIN(URL 编码处理一下，防止中文乱码)
+				che["pin"], _ = url.QueryUnescape(pinMatch[1])
 				err = saveToDb(che["userId"].(string), che["pin"].(string))
 				if err != nil {
 					che["status"] = 3 // 标记为绑定失败
