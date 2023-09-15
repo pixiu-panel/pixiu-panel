@@ -30,7 +30,7 @@ func sendNotify(logs []entity.NotifyLog) {
 		log.Debugf("发送通知: %s --> %s", l.Id, l.Pin)
 
 		// 如果消息只有一行，拒绝发送
-		if len(strings.Split(l.Content, "\n")) < 2 {
+		if len(strings.Split(strings.ReplaceAll(l.Content, " ", ""), "\n")) < 2 {
 			continue
 		}
 
