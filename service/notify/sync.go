@@ -7,6 +7,7 @@ import (
 	"pixiu-panel/internal/db"
 	"pixiu-panel/internal/notify"
 	"pixiu-panel/model/entity"
+	"strings"
 )
 
 // sendNotify
@@ -27,6 +28,11 @@ func sendNotify(logs []entity.NotifyLog) {
 	// 挨个推送
 	for _, l := range logs {
 		log.Debugf("发送通知: %s --> %s", l.Id, l.Pin)
+
+		// 如果消息只有一行，拒绝发送
+		if len(strings.Split(l.Content, "\n")) < 2 {
+			continue
+		}
 
 		// 在消息末尾增加固定消息
 		l.Content += "\n \n由'貔貅面板'提供支持\n后台地址: " + config.Conf.System.Domain
