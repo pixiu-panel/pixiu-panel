@@ -20,7 +20,7 @@ func Parse(msg param.NotifyMessage) (err error) {
 	content = regexp.MustCompile(`\n+入口.*`).ReplaceAllString(content, "")
 
 	// 提取内容正则
-	re := regexp.MustCompile(`(【)?(京东)?账号\d+(】)?.*?`)
+	re := regexp.MustCompile(`(【)?(京东)?账号\d?[^信息](】)?.*`)
 	matches := re.FindAllStringSubmatchIndex(content, -1)
 
 	msgArr := make([]string, 0, len(matches))
@@ -32,6 +32,10 @@ func Parse(msg param.NotifyMessage) (err error) {
 		}
 	}
 	log.Debugf("共有%d条待处理消息", len(msgArr))
+
+	if len(msgArr) == 0 {
+		return
+	}
 
 	// 入库
 	err = saveMsgToDb(msg.Title, msgArr)
