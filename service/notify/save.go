@@ -18,7 +18,7 @@ func saveMsgToDb(title string, msg []string) (err error) {
 	var logs []entity.NotifyLog
 	for _, m := range msg {
 		// 匹配出带账号的行
-		accountLine := regexp.MustCompile(`(【)?(京东)?账号\d+(】)?.*`).FindString(m)
+		accountLine := regexp.MustCompile(`(【)?(京东)?账号\d?[^信息](】)?.*`).FindString(m)
 		// 去掉前缀
 		pin := regexp.MustCompile(`(【)?(京东)?账号.*([】 ])`).ReplaceAllString(accountLine, "")
 		// 去掉是否实名信息
