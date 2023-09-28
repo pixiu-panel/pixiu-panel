@@ -33,6 +33,10 @@ func Parse(msg param.NotifyMessage) (err error) {
 	}
 	log.Debugf("共有%d条待处理消息", len(msgArr))
 
+	if len(msgArr) == 0 {
+		return
+	}
+
 	// 入库
 	err = saveMsgToDb(msg.Title, msgArr)
 	return
