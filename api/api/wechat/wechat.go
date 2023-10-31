@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"gitee.ltd/lxh/logger/log"
 	"github.com/gin-gonic/gin"
+	"net/http"
 	"pixiu-panel/model/param"
-	"pixiu-panel/pkg/response"
 )
 
 // Notify
@@ -27,5 +27,9 @@ func Notify(ctx *gin.Context) {
 	// 处理消息
 	handler(bd)
 
-	response.New(ctx).Success()
+	//response.New(ctx).Success()
+	ctx.JSON(http.StatusOK, map[string]any{
+		"code": 0,
+		"msg":  "success",
+	})
 }
