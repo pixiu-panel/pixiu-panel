@@ -6,6 +6,7 @@ import (
 	"gitee.ltd/lxh/logger/log"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
+	"net/url"
 	"pixiu-panel/internal/db"
 	"pixiu-panel/internal/notify"
 	"pixiu-panel/model/entity"
@@ -28,6 +29,8 @@ func Notify(ctx *gin.Context) {
 		response.New(ctx).SetMsg("参数错误").SetError(err).Fail()
 		return
 	}
+	// URL 编码处理一下，防止中文乱码
+	p.Pin, _ = url.QueryUnescape(p.Pin)
 
 	dealScanAfter(p)
 	response.New(ctx).Success()
