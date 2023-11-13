@@ -5,6 +5,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"pixiu-panel/config"
+	"pixiu-panel/internal/db"
+	"pixiu-panel/model/entity"
 	"pixiu-panel/model/param"
 	"pixiu-panel/pkg/response"
 	"pixiu-panel/service/notify"
@@ -24,6 +26,16 @@ func MessageNotify(ctx *gin.Context) {
 		return
 	}
 	log.Printf("当前处理任务: %s", p.Title)
+
+	go func() {
+		// 异步保存原始日志入库
+		var rl entity.RawNotifyLog
+		rl.Title = p.Title
+		rl.Content = p.Content
+		if err := db.Client.Create(&rl).Error; err != nil {
+			log.Printf("保存原始日志失败: %v", err)
+		}
+	}()
 
 	// 校验任务是否需要发送消息
 	if !slice.Contain(config.Conf.Notify.AllowTitle, p.Title) {

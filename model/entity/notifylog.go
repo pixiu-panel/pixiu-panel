@@ -20,3 +20,21 @@ type NotifyLog struct {
 func (NotifyLog) TableName() string {
 	return "t_notify_log"
 }
+
+// =====================================================================================================================
+
+// RawNotifyLog
+// @description: 原始通知日志
+type RawNotifyLog struct {
+	types.BaseDbModel
+	Title   string `gorm:"column:title;type:varchar(255);not null;comment:标题"`
+	Content string `gorm:"column:content;type:text;not null;comment:内容"`
+}
+
+// TableName
+// @description: 表名
+// @receiver RawNotifyLog
+// @return string
+func (RawNotifyLog) TableName() string {
+	return "t_raw_notify_log"
+}
