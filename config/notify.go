@@ -3,13 +3,22 @@ package config
 // notify
 // @description: 通知配置
 type notify struct {
-	AllowTitle []string `json:"allowTitle" yaml:"allowTitle" mapstructure:"allowTitle"` // 允许的标题
-	Wechat     wechat   `json:"wechat" yaml:"wechat" mapstructure:"wechat"`             // 微信机器人配置
-	QQ         qq       `json:"qq" yaml:"qq" mapstructure:"qq"`                         // QQ机器人(go-cqhttp)配置
-	Ftqq       ftqq     `json:"ftqq" yaml:"ftqq" mapstructure:"ftqq"`                   // Server酱配置
-	PushDeer   pushDeer `json:"pushDeer" yaml:"pushDeer" mapstructure:"pushDeer"`       // PushDeer配置
-	PushPlus   ftqq     `json:"pushPlus" yaml:"pushPlus" mapstructure:"pushPlus"`       // PushPlus配置(复用一下Server酱配置)
-	Email      smtp     `json:"smtp" yaml:"smtp" mapstructure:"smtp"`                   // 邮件配置
+	AllowTitle []string      `json:"allowTitle" yaml:"allowTitle" mapstructure:"allowTitle"` // 允许的标题
+	Replace    []replaceRule `json:"replace" yaml:"replace" mapstructure:"replace"`          // 替换内容
+	Wechat     wechat        `json:"wechat" yaml:"wechat" mapstructure:"wechat"`             // 微信机器人配置
+	QQ         qq            `json:"qq" yaml:"qq" mapstructure:"qq"`                         // QQ机器人(go-cqhttp)配置
+	Ftqq       ftqq          `json:"ftqq" yaml:"ftqq" mapstructure:"ftqq"`                   // Server酱配置
+	PushDeer   pushDeer      `json:"pushDeer" yaml:"pushDeer" mapstructure:"pushDeer"`       // PushDeer配置
+	PushPlus   ftqq          `json:"pushPlus" yaml:"pushPlus" mapstructure:"pushPlus"`       // PushPlus配置(复用一下Server酱配置)
+	Email      smtp          `json:"smtp" yaml:"smtp" mapstructure:"smtp"`                   // 邮件配置
+}
+
+// replaceRule
+// @description: 替换规则
+type replaceRule struct {
+	Title       string `json:"title" yaml:"title" mapstructure:"title"` // 标题
+	Source      string `json:"src" yaml:"src" mapstructure:"src"`       // 来源
+	Destination string `json:"dst" yaml:"dst" mapstructure:"dst"`       // 目标
 }
 
 // wechat
