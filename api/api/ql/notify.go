@@ -10,6 +10,7 @@ import (
 	"pixiu-panel/model/param"
 	"pixiu-panel/pkg/response"
 	"pixiu-panel/service/notify"
+	"strings"
 )
 
 // MessageNotify
@@ -26,6 +27,15 @@ func MessageNotify(ctx *gin.Context) {
 		return
 	}
 	log.Printf("当前处理任务: %s", p.Title)
+
+	// 处理一下部分消息内容
+	if len(config.Conf.Notify.Replace) > 0 {
+		for _, rule := range config.Conf.Notify.Replace {
+			if p.Title == rule.Title {
+				p.Content = strings.ReplaceAll(p.Content, rule.Source, rule.Destination)
+			}
+		}
+	}
 
 	go func() {
 		// 异步保存原始日志入库

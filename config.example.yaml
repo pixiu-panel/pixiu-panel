@@ -50,6 +50,10 @@ notify:
     - 东东农场日常任务
     - 京东资产变动
     - 京东价保
+  replace:
+    - title: 新东东农场任务
+      src: "：🌳"
+      dst: "\n🌳"
   wechat:
     # 微信HOOK，自行使用wxhelper搭建
     enable: false
