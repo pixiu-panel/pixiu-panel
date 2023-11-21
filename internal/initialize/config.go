@@ -33,7 +33,6 @@ func initConfig() {
 	redis.Init()
 
 	// 下面的代码是配置变动之后自动刷新的
-	vp.WatchConfig()
 	vp.OnConfigChange(func(e fsnotify.Event) {
 		// 绑定配置文件
 		if err := vp.Unmarshal(&config.Conf); err != nil {
@@ -44,4 +43,6 @@ func initConfig() {
 			redis.Init()
 		}
 	})
+	// 监听变动
+	vp.WatchConfig()
 }
